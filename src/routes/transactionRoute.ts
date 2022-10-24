@@ -1,17 +1,20 @@
-import { z } from "zod";
 import Multer from "@koa/multer";
 import Router from "@koa/router";
-import { handleError, validate } from "../utils";
-import { uploadTransactionHistoryHandler } from "../handlers";
-import { Sanitization } from "../types";
-import { sanitizationModel } from "../db";
+import { handleError } from "../utils";
+import {
+  addSanitizingHandler,
+  listAllHandler,
+  listUnsanitizedHandler,
+  updateSanitizingHandler,
+  uploadHistoryHandler,
+} from "../handlers";
 
 export const transactionRoute = new Router({ prefix: "/transaction" });
 
 const form = Multer();
 
 transactionRoute.post(
-  "/upload-transaction-history",
+  "/upload-history",
   form.fields([
     {
       name: "transactionRecord",
@@ -29,69 +32,35 @@ transactionRoute.post(
   async (ctx, next) => {
     await handleError(async () => {
       await next();
-      uploadTransactionHistoryHandler(ctx);
+      uploadHistoryHandler(ctx);
     }, ctx);
   }
 );
 
-const sanitizingSchema = z.object({
-  body: z.object({
-    rawDescription: z.string(),
-    sanitizedDescription: z.string(),
-    type: z.string(),
-    category: z.string().optional(),
-    vendor: z.string(),
-  }),
-});
-
-transactionRoute.post("/add-sanitizing-transaction", async (ctx, next) => {
+transactionRoute.get("/list-all", async (ctx, next) => {
   await handleError(async () => {
     await next();
-    await validate(sanitizingSchema, ctx);
-    const body = ctx.request.body as Sanitization;
-
-    await sanitizationModel
-      .build({
-        rawDescription: body.rawDescription,
-        sanitizedDescription: body.sanitizedDescription,
-        type: body.type,
-        category: body.category,
-        vendor: body.vendor,
-      })
-      .save();
-
-    ctx.body = body;
+    await listAllHandler(ctx);
   }, ctx);
 });
 
-const updateSanitizingSchema = z.object({
-  body: z.object({
-    id: z.string(),
-    rawDescription: z.string(),
-    sanitizedDescription: z.string(),
-    type: z.string(),
-    category: z.string().optional(),
-    vendor: z.string(),
-  }),
-});
-
-transactionRoute.post("/update-sanitizing-transaction", async (ctx, next) => {
+transactionRoute.get("/list-unsanitized", async (ctx, next) => {
   await handleError(async () => {
     await next();
-    await validate(updateSanitizingSchema, ctx);
-    const body = ctx.request.body as Sanitization;
+    await listUnsanitizedHandler(ctx);
+  }, ctx);
+});
 
-    await sanitizationModel.updateOne(
-      { id: body.id },
-      {
-        rawDescription: body.rawDescription,
-        sanitizedDescription: body.sanitizedDescription,
-        type: body.type,
-        category: body.category,
-        vendor: body.vendor,
-      }
-    );
+transactionRoute.post("/add-sanitizing", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await addSanitizingHandler(ctx);
+  }, ctx);
+});
 
-    ctx.body = body;
+transactionRoute.post("/update-sanitizing", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await updateSanitizingHandler(ctx);
   }, ctx);
 });

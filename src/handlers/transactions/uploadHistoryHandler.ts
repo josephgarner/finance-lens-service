@@ -4,7 +4,7 @@ import csv from "csv-parser";
 import { Bank, UploadFiles } from "../../types";
 import { transactionSanitization } from "../../factory";
 
-export const uploadTransactionHistoryHandler = (ctx: Context) => {
+export const uploadHistoryHandler = (ctx: Context) => {
   const body = ctx.request.body;
   const files = ctx.request.files as UploadFiles;
 

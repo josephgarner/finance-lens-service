@@ -23,15 +23,14 @@ export const transactionSanitization = async (
                 sanitsiedTransaction.rawDescription
               )
           );
+          const dateSplit = transaction.date.split("/");
+          const date = new Date(
+            Number(dateSplit[2]),
+            Number(dateSplit[1]) - 1,
+            Number(dateSplit[0])
+          );
           if (sanitsingTransaction.length > 0) {
             const cleanTrans = sanitsingTransaction[0];
-            const dateSplit = transaction.date.split("/");
-            const date = new Date(
-              Number(dateSplit[2]),
-              Number(dateSplit[1]) - 1,
-              Number(dateSplit[0])
-            );
-            console.log(date);
             await transactionDBData
               .build({
                 date: date,
@@ -45,6 +44,19 @@ export const transactionSanitization = async (
                 account: account,
                 category: cleanTrans.category,
                 vendor: cleanTrans.vendor,
+                credit: toCents(Number(transaction.credit)),
+                debit: toCents(Number(transaction.debit)),
+              })
+              .save();
+          } else {
+            await transactionDBData
+              .build({
+                date: date,
+                type: transaction.debit
+                  ? TransactionType.EXPENSE
+                  : TransactionType.INCOME,
+                rawDescription: transaction.description,
+                account: account,
                 credit: toCents(Number(transaction.credit)),
                 debit: toCents(Number(transaction.debit)),
               })

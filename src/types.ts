@@ -11,11 +11,11 @@ export enum Bank {
 export type Transaction = {
   date: Date;
   rawDescription: string;
-  sanitizedDescription: string;
+  sanitizedDescription?: string;
   account: string;
   type: TransactionType;
-  category: string;
-  vendor: string;
+  category?: string;
+  vendor?: string;
   credit: number;
   debit: number;
 };

@@ -1,3 +1,3 @@
 export const toCents = (input: number) => {
-  return input * 100;
+  return Math.round(input * 100);
 };
