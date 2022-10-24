@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  FinanceLensService:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: finance-lens-service
+    container_name: FinanceLensService
+    hostname: has.prod.finance-lens-service
+    restart: on-failure
+    ports:
+      - "4000:4000"
+    expose:
+      - "4000"
+networks:
+  default:
+    name: "nginx_default"
+    external: true
