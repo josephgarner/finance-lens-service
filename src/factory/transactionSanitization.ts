@@ -1,8 +1,7 @@
 import { sanitizationModel } from "../db";
-import { Bank, Sanitization, TransactionType } from "../types";
+import { Bank, Sanitization, Transaction, TransactionType } from "../types";
 import { toCents } from "../utils";
 import { INGTransaction } from "./types";
-import { transactionData as transactionDBData } from "../db";
 
 type TransactionData = INGTransaction;
 
@@ -12,7 +11,7 @@ export const transactionSanitization = async (
   account: string
 ) => {
   const sanitsingData: Sanitization[] = await sanitizationModel.find();
-
+  const sanitizationOutput: Transaction[] = [];
   switch (bank) {
     case Bank.ING:
       {
@@ -31,36 +30,34 @@ export const transactionSanitization = async (
           );
           if (sanitsingTransaction.length > 0) {
             const cleanTrans = sanitsingTransaction[0];
-            await transactionDBData
-              .build({
-                date: date,
-                type: cleanTrans.type
-                  ? cleanTrans.type
-                  : transaction.debit
-                  ? TransactionType.EXPENSE
-                  : TransactionType.INCOME,
-                rawDescription: transaction.description,
-                sanitizedDescription: cleanTrans.sanitizedDescription,
-                account: account,
-                category: cleanTrans.category,
-                vendor: cleanTrans.vendor,
-                credit: toCents(Number(transaction.credit)),
-                debit: toCents(Number(transaction.debit)),
-              })
-              .save();
+            sanitizationOutput.push({
+              date: date,
+              type: cleanTrans.type
+                ? cleanTrans.type
+                : transaction.debit
+                ? TransactionType.EXPENSE
+                : TransactionType.INCOME,
+              rawDescription: transaction.description,
+              sanitizedDescription: cleanTrans.sanitizedDescription,
+              account: account,
+              category: cleanTrans.category,
+              vendor: cleanTrans.vendor,
+              credit: toCents(Number(transaction.credit)),
+              debit: toCents(Number(transaction.debit)),
+              balance: toCents(Number(transaction.balance)),
+            });
           } else {
-            await transactionDBData
-              .build({
-                date: date,
-                type: transaction.debit
-                  ? TransactionType.EXPENSE
-                  : TransactionType.INCOME,
-                rawDescription: transaction.description,
-                account: account,
-                credit: toCents(Number(transaction.credit)),
-                debit: toCents(Number(transaction.debit)),
-              })
-              .save();
+            sanitizationOutput.push({
+              date: date,
+              type: transaction.debit
+                ? TransactionType.EXPENSE
+                : TransactionType.INCOME,
+              rawDescription: transaction.description,
+              account: account,
+              credit: toCents(Number(transaction.credit)),
+              debit: toCents(Number(transaction.debit)),
+              balance: toCents(Number(transaction.balance)),
+            });
           }
         });
       }
@@ -69,4 +66,5 @@ export const transactionSanitization = async (
       console.error("Bank not supported");
     }
   }
+  return sanitizationOutput;
 };

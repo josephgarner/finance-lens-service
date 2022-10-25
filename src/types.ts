@@ -8,6 +8,14 @@ export enum Bank {
   ING = "ING",
 }
 
+export type Account = {
+  accountName: string;
+  accountType: string;
+  balance?: number;
+  bank: Bank;
+  balanceSince?: Date;
+};
+
 export type Transaction = {
   date: Date;
   rawDescription: string;
@@ -18,6 +26,7 @@ export type Transaction = {
   vendor?: string;
   credit: number;
   debit: number;
+  balance: number;
 };
 
 export type Sanitization = {

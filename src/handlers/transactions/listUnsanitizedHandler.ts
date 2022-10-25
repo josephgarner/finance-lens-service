@@ -15,6 +15,7 @@ export const listUnsanitizedHandler = async (ctx: Context) => {
     vendor: transaction.vendor,
     credit: transaction.credit,
     debit: transaction.debit,
+    balance: transaction.balance,
   }));
   ctx.body = allTransactions;
 };
