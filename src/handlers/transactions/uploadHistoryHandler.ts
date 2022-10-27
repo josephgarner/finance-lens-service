@@ -4,6 +4,7 @@ import csv from "csv-parser";
 import { Bank, Transaction, UploadFiles } from "../../types";
 import { transactionSanitization } from "../../factory";
 import { transactionData } from "../../db";
+import { updateBalanceDal } from "../../dal";
 
 export const uploadHistoryHandler = async (ctx: Context) => {
   const body = ctx.request.body;
@@ -31,27 +32,41 @@ export const uploadHistoryHandler = async (ctx: Context) => {
     // .on("end", () => {});
     ctx.body = "Transaction List ingested";
 
+    const bank = body.bank as Bank;
+    const account = body.account as string;
+
     sanitsiedTransactions = await transactionSanitization(
       results,
-      body.bank as Bank,
-      body.account as string
+      bank,
+      account
     );
-    sanitsiedTransactions.forEach(
-      async (transaction) =>
-        await transactionData
-          .build({
-            date: transaction.date,
-            type: transaction.type,
-            rawDescription: transaction.rawDescription,
-            sanitizedDescription: transaction.sanitizedDescription,
-            account: transaction.account,
-            category: transaction.category,
-            vendor: transaction.vendor,
-            credit: transaction.credit,
-            debit: transaction.debit,
-            balance: transaction.balance,
-          })
-          .save()
-    );
+    sanitsiedTransactions.forEach(async (transaction) => {
+      console.log({
+        accountName: account,
+        bank: bank,
+        balanceSince: transaction.date,
+        balance: transaction.balance,
+      });
+      await updateBalanceDal({
+        accountName: account,
+        bank: bank,
+        balanceSince: transaction.date,
+        balance: transaction.balance,
+      });
+      await transactionData
+        .build({
+          date: transaction.date,
+          type: transaction.type,
+          rawDescription: transaction.rawDescription,
+          sanitizedDescription: transaction.sanitizedDescription,
+          account: transaction.account,
+          category: transaction.category,
+          vendor: transaction.vendor,
+          credit: transaction.credit,
+          debit: transaction.debit,
+          balance: transaction.balance,
+        })
+        .save();
+    });
   }
 };

@@ -15,5 +15,8 @@ export const listAllHandler = async (ctx: Context) => {
     debit: transaction.debit,
     balance: transaction.balance,
   }));
+  allTransactions.sort(
+    (transA, transB) => transA.date.getTime() - transB.date.getTime()
+  );
   ctx.body = allTransactions;
 };

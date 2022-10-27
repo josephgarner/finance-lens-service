@@ -1,21 +1,15 @@
 import { accountData } from "../../db";
 import { Account } from "../../types";
 
-export const updateBalanceDal = (account: Account) => {
-  accountData
+export const updateBalanceDal = async (account: Account) => {
+  await accountData
     .updateOne(
       {
         accountName: account.accountName,
         bank: account.bank,
-        balanceSince: { $lte: account.balanceSince },
+        balanceSince: { $not: { $gte: account.balanceSince } },
       },
-      { balance: account.balance },
-      {},
-      (error, docs) => {
-        if (error) {
-          throw new Error("Error updating account balance");
-        }
-      }
+      { balance: account.balance, balanceSince: account.balanceSince }
     )
     .exec();
 };

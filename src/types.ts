@@ -10,7 +10,7 @@ export enum Bank {
 
 export type Account = {
   accountName: string;
-  accountType: string;
+  accountType?: string;
   balance?: number;
   bank: Bank;
   balanceSince?: Date;

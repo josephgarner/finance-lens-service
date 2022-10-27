@@ -6,6 +6,7 @@ import {
   listAllHandler,
   listUnsanitizedHandler,
   updateSanitizingHandler,
+  updateTransactionHandler,
   uploadHistoryHandler,
 } from "../handlers";
 
@@ -62,5 +63,12 @@ transactionRoute.post("/update-sanitizing", async (ctx, next) => {
   await handleError(async () => {
     await next();
     await updateSanitizingHandler(ctx);
+  }, ctx);
+});
+
+transactionRoute.post("/update", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await updateTransactionHandler(ctx);
   }, ctx);
 });
