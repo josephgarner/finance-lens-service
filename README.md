@@ -59,6 +59,19 @@ docker-compose build
 docker-compose up -d
 ```
 
+## Endpoints
+
+| Endpoint                         | Description                                                                                 |
+| -------------------------------- | ------------------------------------------------------------------------------------------- |
+| `/transaction/upload-history`    | Upload the transaction history in CSV format while also providing the `Bank` and `Account`. |
+| `/transaction/list-all`          | List all transactions                                                                       |
+| `/transaction/list-unsanitized`  | List all sanitized transactions                                                             |
+| `/transaction/add-sanitizing`    | Adds a sanitization transaction that can be used to sanitize other transactions             |
+| `/transaction/update-sanitizing` | Updates a sanitization transaction                                                          |
+| `/transaction/update`            | Updates a transaction where the user may manually sanitize the transaction                  |
+| `/account/update-balance`        | Updates the balance for a given account                                                     |
+| `/account/list-all`              | List all accounts and their details                                                         |
+
 ## Why?
 
 - I wanted to create a finance mangament and tracking aplication that would suite my needs and allow me to expand functionality when I need it.
