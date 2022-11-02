@@ -6,7 +6,7 @@ import { validate } from "../../utils";
 
 const updateTransactionSchema = z.object({
   body: z.object({
-    date: z.date(),
+    date: z.string(),
     rawDescription: z.string(),
     sanitizedDescription: z.string(),
     account: z.string(),

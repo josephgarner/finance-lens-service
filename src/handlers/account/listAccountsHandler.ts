@@ -10,5 +10,5 @@ export const listAccountsHandler = async (ctx: Context) => {
     bank: account.bank,
     balanceSince: account.balanceSince,
   }));
-  ctx.body = accountList;
+  ctx.body = { result: { accounts: accountList } };
 };

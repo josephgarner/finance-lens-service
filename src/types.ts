@@ -6,6 +6,7 @@ export enum TransactionType {
 
 export enum Bank {
   ING = "ING",
+  INTERNAL = "INTERNAL",
 }
 
 export type Account = {

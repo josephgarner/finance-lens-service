@@ -5,6 +5,7 @@ import {
   addSanitizingHandler,
   listAllHandler,
   listUnsanitizedHandler,
+  runSanitizationHandler,
   updateSanitizingHandler,
   updateTransactionHandler,
   uploadHistoryHandler,
@@ -70,5 +71,12 @@ transactionRoute.post("/update", async (ctx, next) => {
   await handleError(async () => {
     await next();
     await updateTransactionHandler(ctx);
+  }, ctx);
+});
+
+transactionRoute.post("/run-sanitization/:account", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await runSanitizationHandler(ctx);
   }, ctx);
 });

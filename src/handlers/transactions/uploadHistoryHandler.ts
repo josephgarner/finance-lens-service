@@ -36,17 +36,11 @@ export const uploadHistoryHandler = async (ctx: Context) => {
     const account = body.account as string;
 
     sanitsiedTransactions = await transactionSanitization(
-      results,
       bank,
-      account
+      account,
+      results
     );
     sanitsiedTransactions.forEach(async (transaction) => {
-      console.log({
-        accountName: account,
-        bank: bank,
-        balanceSince: transaction.date,
-        balance: transaction.balance,
-      });
       await updateBalanceDal({
         accountName: account,
         bank: bank,

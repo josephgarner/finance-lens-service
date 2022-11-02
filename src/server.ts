@@ -4,6 +4,7 @@ import bodyParser from "koa-bodyparser";
 import { connectToDatabase } from "./db";
 import { rootRouter } from "./routes";
 
+const cors = require("@koa/cors");
 const logger = require("koa-logger");
 const app = new Koa();
 
@@ -15,6 +16,7 @@ app.use(bodyParser());
 app.use(rootRouter.routes());
 app.use(rootRouter.allowedMethods());
 app.use(logger());
+app.use(cors());
 
 app.on("error", function (error) {
   console.log("Server has thrown and error");

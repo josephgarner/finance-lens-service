@@ -18,5 +18,5 @@ export const listAllHandler = async (ctx: Context) => {
   allTransactions.sort(
     (transA, transB) => transA.date.getTime() - transB.date.getTime()
   );
-  ctx.body = allTransactions;
+  ctx.body = { result: { transactions: allTransactions } };
 };
