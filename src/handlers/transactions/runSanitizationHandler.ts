@@ -1,5 +1,6 @@
 import { Context } from "koa";
 import { getAllUnsanitizedTransactionsDal } from "../../dal/transaction/getAllUnsanitizedTransactionsDal";
+import { updateTransactionDal } from "../../dal/transaction/updateTransactionDal";
 import { transactionSanitization } from "../../factory";
 import { Bank } from "../../types";
 
@@ -9,8 +10,11 @@ export const runSanitizationHandler = async (ctx: Context) => {
   const sanitsiedTransactions = await transactionSanitization(
     Bank.INTERNAL,
     account,
+    [],
     transactions
   );
-  console.log(sanitsiedTransactions);
+  sanitsiedTransactions.map(async (sanitsied) => {
+    await updateTransactionDal(sanitsied);
+  });
   ctx.body = {};
 };

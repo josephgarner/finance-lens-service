@@ -7,6 +7,8 @@ import { transactionData } from "../../db";
 import { updateBalanceDal } from "../../dal";
 
 export const uploadHistoryHandler = async (ctx: Context) => {
+  console.log(ctx.request.body);
+  console.log(ctx.request.files);
   const body = ctx.request.body;
   const files = ctx.request.files as UploadFiles;
 
@@ -29,8 +31,9 @@ export const uploadHistoryHandler = async (ctx: Context) => {
         })
       )
       .on("data", (data) => results.push(data));
-    // .on("end", () => {});
-    ctx.body = "Transaction List ingested";
+
+    const result = "Transaction List ingested";
+    ctx.body = { result: result };
 
     const bank = body.bank as Bank;
     const account = body.account as string;

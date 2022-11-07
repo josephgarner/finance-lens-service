@@ -6,6 +6,8 @@ export * from "./transactions/updateSanitizingHandler";
 export * from "./transactions/listAllHandler";
 export * from "./transactions/updateTransactionHandler";
 export * from "./transactions/runSanitizationHandler";
+export * from "./transactions/listSanitizingHandler";
+export * from "./transactions/deleteSanitizingHandler";
 
 // Account
 export * from "./account/createHandler";

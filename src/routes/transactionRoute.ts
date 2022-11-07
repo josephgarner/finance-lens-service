@@ -3,7 +3,9 @@ import Router from "@koa/router";
 import { handleError } from "../utils";
 import {
   addSanitizingHandler,
+  deleteSanitizingHandler,
   listAllHandler,
+  listSanitizingHandler,
   listUnsanitizedHandler,
   runSanitizationHandler,
   updateSanitizingHandler,
@@ -34,7 +36,7 @@ transactionRoute.post(
   async (ctx, next) => {
     await handleError(async () => {
       await next();
-      uploadHistoryHandler(ctx);
+      await uploadHistoryHandler(ctx);
     }, ctx);
   }
 );
@@ -60,10 +62,24 @@ transactionRoute.post("/add-sanitizing", async (ctx, next) => {
   }, ctx);
 });
 
+transactionRoute.get("/list-sanitizing", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await listSanitizingHandler(ctx);
+  }, ctx);
+});
+
 transactionRoute.post("/update-sanitizing", async (ctx, next) => {
   await handleError(async () => {
     await next();
     await updateSanitizingHandler(ctx);
+  }, ctx);
+});
+
+transactionRoute.post("/delete-sanitizing", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await deleteSanitizingHandler(ctx);
   }, ctx);
 });
 
