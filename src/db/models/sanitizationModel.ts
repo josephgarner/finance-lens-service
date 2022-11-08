@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import { Sanitization } from "../../types";
 
 const sanitizationSchema = new mongoose.Schema({
-  rawDescription: {
-    type: String,
+  keywords: {
+    type: Array,
     required: true,
   },
   sanitizedDescription: {

@@ -13,6 +13,7 @@ const accountSchema = z.object({
 });
 
 export const createHandler = async (ctx: Context) => {
+  console.log(ctx.body);
   await validate(accountSchema, ctx);
 
   const body = ctx.request.body as Account;
@@ -25,5 +26,5 @@ export const createHandler = async (ctx: Context) => {
     })
     .save();
 
-  ctx.body = body;
+  ctx.body = { result: { account: body } };
 };

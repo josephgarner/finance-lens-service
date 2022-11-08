@@ -12,6 +12,8 @@ import {
   updateTransactionHandler,
   uploadHistoryHandler,
 } from "../handlers";
+import { listUnsanitizedForAccountHandler } from "../handlers/transactions/listUnsanitizedForAccountHandler";
+import { listAllForAccountHandler } from "../handlers/transactions/listAllForAccountHandler";
 
 export const transactionRoute = new Router({ prefix: "/transaction" });
 
@@ -48,10 +50,24 @@ transactionRoute.get("/list-all", async (ctx, next) => {
   }, ctx);
 });
 
+transactionRoute.get("/list-all/:account", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await listAllForAccountHandler(ctx);
+  }, ctx);
+});
+
 transactionRoute.get("/list-unsanitized", async (ctx, next) => {
   await handleError(async () => {
     await next();
     await listUnsanitizedHandler(ctx);
+  }, ctx);
+});
+
+transactionRoute.get("/list-unsanitized/:account", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await listUnsanitizedForAccountHandler(ctx);
   }, ctx);
 });
 

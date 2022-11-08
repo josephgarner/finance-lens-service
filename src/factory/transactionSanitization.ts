@@ -19,10 +19,14 @@ export const transactionSanitization = async (
         if (transactionData) {
           transactionData.forEach(async (transaction) => {
             const sanitsingTransaction = sanitsingData.filter(
-              (sanitsiedTransaction) =>
-                transaction.description.includes(
-                  sanitsiedTransaction.rawDescription
-                )
+              (sanitsiedTransaction) => {
+                const results = sanitsiedTransaction.keywords.map((word) => {
+                  return transaction.description
+                    .toLocaleLowerCase()
+                    .includes(word.toLocaleLowerCase());
+                });
+                return results.every((e) => e === true);
+              }
             );
             const dateSplit = transaction.date.split("/");
             const date = new Date(
@@ -70,10 +74,14 @@ export const transactionSanitization = async (
         if (processedTransactions) {
           processedTransactions.forEach((transaction) => {
             const sanitsingTransaction = sanitsingData.filter(
-              (sanitsiedTransaction) =>
-                transaction.rawDescription.includes(
-                  sanitsiedTransaction.rawDescription
-                )
+              (sanitsiedTransaction) => {
+                const results = sanitsiedTransaction.keywords.map((word) => {
+                  return transaction.rawDescription
+                    .toLocaleLowerCase()
+                    .includes(word.toLocaleLowerCase());
+                });
+                return results.every((e) => e === true);
+              }
             );
             if (sanitsingTransaction.length > 0) {
               const cleanTrans = sanitsingTransaction[0];

@@ -32,7 +32,7 @@ export type Transaction = {
 
 export type Sanitization = {
   id?: string;
-  rawDescription: string;
+  keywords: string[];
   sanitizedDescription: string;
   type: TransactionType;
   category: string;

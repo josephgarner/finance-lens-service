@@ -6,7 +6,7 @@ import { validate } from "../../utils";
 
 const sanitizingSchema = z.object({
   body: z.object({
-    rawDescription: z.string(),
+    keywords: z.string().array(),
     sanitizedDescription: z.string(),
     type: z.string(),
     category: z.string().optional(),
@@ -21,7 +21,7 @@ export const addSanitizingHandler = async (ctx: Context) => {
 
   await sanitizationModel
     .build({
-      rawDescription: body.rawDescription,
+      keywords: body.keywords,
       sanitizedDescription: body.sanitizedDescription,
       type: body.type,
       category: body.category,
