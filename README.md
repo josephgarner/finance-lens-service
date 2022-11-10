@@ -35,6 +35,9 @@ After cloaning this repo navigate to the folder and proceed with the following
 ```
 DATABASE_URI=
 DATABASE=
+JWKSURI=
+AUDIENCE=
+ISSUER=
 ```
 
 #### Install dependacies
