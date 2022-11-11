@@ -10,8 +10,8 @@ services:
     restart: on-failure
     ports:
       - "4000:4000"
-    expose:
-      - "4000"
+    networks:
+      - main-network
 networks:
   default:
     name: "nginx_default"
