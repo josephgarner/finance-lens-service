@@ -1,12 +1,12 @@
 version: "3.7"
 services:
-  FinanceLensService:
+  lakshmiService:
     build:
       context: .
       dockerfile: Dockerfile
-    image: finance-lens-service
-    container_name: FinanceLensService
-    hostname: has.prod.finance-lens-service
+    image: lakshmi-service
+    container_name: LakshmiService
+    hostname: has.prod.lakshmi-service
     restart: on-failure
     ports:
       - "4000:4000"
