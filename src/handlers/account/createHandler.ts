@@ -1,6 +1,7 @@
 import { Context } from "koa";
 import { z } from "zod";
-import { accountData } from "../../db/models/accountModel";
+import { getUserID } from "../../auth/getUserID";
+import { createAccountDAL } from "../../dal";
 import { Account, Bank } from "../../types";
 import { validate } from "../../utils";
 
@@ -16,15 +17,9 @@ export const createHandler = async (ctx: Context) => {
   console.log(ctx.body);
   await validate(accountSchema, ctx);
 
-  const body = ctx.request.body as Account;
+  const account = ctx.request.body as Account;
 
-  await accountData
-    .build({
-      accountName: body.accountName,
-      accountType: body.accountType,
-      bank: body.bank,
-    })
-    .save();
+  await createAccountDAL(account, getUserID(ctx));
 
-  ctx.body = { result: { account: body } };
+  ctx.body = { result: { account: account } };
 };

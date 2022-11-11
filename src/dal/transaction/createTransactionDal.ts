@@ -1,21 +1,23 @@
 import { transactionData } from "../../db";
 import { Transaction } from "../../types";
 
-export const updateTransactionDal = async (
+export const createTransactionDal = async (
   transaction: Transaction,
   userID: string
 ) => {
-  await transactionData.updateOne(
-    {
-      date: transaction.date,
-      rawDescription: transaction.rawDescription,
+  await transactionData
+    .build({
       userID: userID,
-    },
-    {
-      sanitizedDescription: transaction.sanitizedDescription,
+      date: transaction.date,
       type: transaction.type,
+      rawDescription: transaction.rawDescription,
+      sanitizedDescription: transaction.sanitizedDescription,
+      account: transaction.account,
       category: transaction.category,
       vendor: transaction.vendor,
-    }
-  );
+      credit: transaction.credit,
+      debit: transaction.debit,
+      balance: transaction.balance,
+    })
+    .save();
 };

@@ -1,5 +1,6 @@
 import { Context } from "koa";
 import { z } from "zod";
+import { getUserID } from "../../auth/getUserID";
 import { deleteSanitizingDal } from "../../dal";
 import { validate } from "../../utils";
 
@@ -14,7 +15,7 @@ export const deleteSanitizingHandler = async (ctx: Context) => {
 
   const body = ctx.request.body!;
 
-  await deleteSanitizingDal(body.id as string);
+  await deleteSanitizingDal(body.id as string, getUserID(ctx));
 
   ctx.body = body;
 };

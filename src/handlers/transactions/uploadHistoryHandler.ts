@@ -4,7 +4,8 @@ import csv from "csv-parser";
 import { Bank, Transaction, UploadFiles } from "../../types";
 import { transactionSanitization } from "../../factory";
 import { transactionData } from "../../db";
-import { updateBalanceDal } from "../../dal";
+import { createTransactionDal, updateBalanceDal } from "../../dal";
+import { getUserID } from "../../auth/getUserID";
 
 export const uploadHistoryHandler = async (ctx: Context) => {
   console.log(ctx.request.body);
@@ -37,33 +38,25 @@ export const uploadHistoryHandler = async (ctx: Context) => {
 
     const bank = body.bank as Bank;
     const account = body.account as string;
+    const userID = getUserID(ctx);
 
     sanitsiedTransactions = await transactionSanitization(
       bank,
       account,
+      userID,
       results
     );
     sanitsiedTransactions.forEach(async (transaction) => {
-      await updateBalanceDal({
-        accountName: account,
-        bank: bank,
-        balanceSince: transaction.date,
-        balance: transaction.balance,
-      });
-      await transactionData
-        .build({
-          date: transaction.date,
-          type: transaction.type,
-          rawDescription: transaction.rawDescription,
-          sanitizedDescription: transaction.sanitizedDescription,
-          account: transaction.account,
-          category: transaction.category,
-          vendor: transaction.vendor,
-          credit: transaction.credit,
-          debit: transaction.debit,
+      await updateBalanceDal(
+        {
+          accountName: account,
+          bank: bank,
+          balanceSince: transaction.date,
           balance: transaction.balance,
-        })
-        .save();
+        },
+        userID
+      );
+      await createTransactionDal(transaction, userID);
     });
   }
 };

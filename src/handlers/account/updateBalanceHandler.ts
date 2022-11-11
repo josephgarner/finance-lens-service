@@ -1,5 +1,6 @@
 import { Context } from "koa";
 import { z } from "zod";
+import { getUserID } from "../../auth/getUserID";
 import { updateBalanceDal } from "../../dal";
 import { Account, Bank } from "../../types";
 import { validate } from "../../utils";
@@ -18,7 +19,7 @@ export const updateBalanceHandler = async (ctx: Context) => {
 
   const body = ctx.request.body as Account;
 
-  updateBalanceDal(body);
+  updateBalanceDal(body, getUserID(ctx));
 
   ctx.body = body;
 };

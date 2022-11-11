@@ -1,4 +1,4 @@
-import { sanitizationModel } from "../db";
+import { listSanitizing } from "../dal";
 import { Bank, Sanitization, Transaction, TransactionType } from "../types";
 import { toCents } from "../utils";
 import { INGTransaction } from "./types";
@@ -8,10 +8,11 @@ type TransactionData = INGTransaction;
 export const transactionSanitization = async (
   bank: Bank,
   account: string,
+  userID: string,
   transactionData?: TransactionData[],
   processedTransactions?: Transaction[]
 ) => {
-  const sanitsingData: Sanitization[] = await sanitizationModel.find();
+  const sanitsingData: Sanitization[] = await listSanitizing(userID);
   const sanitizationOutput: Transaction[] = [];
   switch (bank) {
     case Bank.ING:
@@ -38,6 +39,7 @@ export const transactionSanitization = async (
               const cleanTrans = sanitsingTransaction[0];
               sanitizationOutput.push({
                 date: date,
+                userID: "",
                 type: cleanTrans.type
                   ? cleanTrans.type
                   : transaction.debit
@@ -55,6 +57,7 @@ export const transactionSanitization = async (
             } else {
               sanitizationOutput.push({
                 date: date,
+                userID: "",
                 type: transaction.debit
                   ? TransactionType.EXPENSE
                   : TransactionType.INCOME,
@@ -86,6 +89,7 @@ export const transactionSanitization = async (
             if (sanitsingTransaction.length > 0) {
               const cleanTrans = sanitsingTransaction[0];
               sanitizationOutput.push({
+                userID: "",
                 date: transaction.date,
                 type: cleanTrans.type
                   ? cleanTrans.type

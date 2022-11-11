@@ -1,6 +1,7 @@
 import { Context } from "koa";
 import { z } from "zod";
-import { sanitizationModel } from "../../db";
+import { getUserID } from "../../auth/getUserID";
+import { createSanitizingDal } from "../../dal";
 import { Sanitization } from "../../types";
 import { validate } from "../../utils";
 
@@ -17,17 +18,9 @@ const sanitizingSchema = z.object({
 export const addSanitizingHandler = async (ctx: Context) => {
   await validate(sanitizingSchema, ctx);
 
-  const body = ctx.request.body as Sanitization;
+  const sanitization = ctx.request.body as Sanitization;
 
-  await sanitizationModel
-    .build({
-      keywords: body.keywords,
-      sanitizedDescription: body.sanitizedDescription,
-      type: body.type,
-      category: body.category,
-      vendor: body.vendor,
-    })
-    .save();
+  await createSanitizingDal(sanitization, getUserID(ctx));
 
-  ctx.body = body;
+  ctx.body = { result: { sanitization: sanitization } };
 };

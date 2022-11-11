@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import { Sanitization } from "../../types";
 
 const sanitizationSchema = new mongoose.Schema({
+  userID: {
+    type: String,
+    required: true,
+  },
   keywords: {
     type: Array,
     required: true,

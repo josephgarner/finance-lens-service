@@ -1,11 +1,11 @@
 import { Context } from "koa";
+import { getUserID } from "../../auth/getUserID";
+import { listUnsanitizedForAccountDal } from "../../dal";
 import { transactionData } from "../../db";
 
 export const listUnsanitizedForAccountHandler = async (ctx: Context) => {
   const { account } = ctx.params;
-  const rawData = await transactionData
-    .find({ sanitizedDescription: null, account: account })
-    .exec();
+  const rawData = await listUnsanitizedForAccountDal(account, getUserID(ctx));
   const allTransactions = rawData.map((transaction) => ({
     date: transaction.date,
     rawDescription: transaction.rawDescription,

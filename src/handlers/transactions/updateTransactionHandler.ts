@@ -1,5 +1,6 @@
 import { Context } from "koa";
 import { z } from "zod";
+import { getUserID } from "../../auth/getUserID";
 import { updateTransactionDal } from "../../dal/transaction/updateTransactionDal";
 import { sanitizationModel, transactionData } from "../../db";
 import { Transaction } from "../../types";
@@ -25,7 +26,7 @@ export const updateTransactionHandler = async (ctx: Context) => {
 
   const body = ctx.request.body as Transaction;
 
-  await updateTransactionDal(body);
+  await updateTransactionDal(body, getUserID(ctx));
 
   ctx.body = body;
 };

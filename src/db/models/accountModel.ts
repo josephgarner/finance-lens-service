@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import { Account } from "../../types";
 
 const accountSchema = new mongoose.Schema({
+  userID: {
+    type: String,
+    required: true,
+  },
   accountName: {
     type: String,
     required: true,

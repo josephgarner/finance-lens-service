@@ -1,8 +1,9 @@
 import { Context } from "koa";
-import { sanitizationModel } from "../../db";
+import { getUserID } from "../../auth/getUserID";
+import { listSanitizing } from "../../dal";
 
 export const listSanitizingHandler = async (ctx: Context) => {
-  const rawData = await sanitizationModel.find().exec();
+  const rawData = await listSanitizing(getUserID(ctx));
   const allSanitization = rawData.map((sanitization) => ({
     id: sanitization.id,
     keywords: sanitization.keywords,

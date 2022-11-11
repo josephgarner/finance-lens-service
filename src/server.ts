@@ -5,7 +5,6 @@ import jwt from "koa-jwt";
 import { connectToDatabase } from "./db";
 import { rootRouter } from "./routes";
 import jwtrsa from "jwks-rsa";
-import { env } from "process";
 
 const cors = require("@koa/cors");
 const logger = require("koa-logger");

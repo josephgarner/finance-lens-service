@@ -1,11 +1,15 @@
 import { Context } from "koa";
-import { transactionData } from "../../db";
+import { getUserID } from "../../auth/getUserID";
+import { listAllTransactionsDal } from "../../dal";
 
 export const listAllForAccountHandler = async (ctx: Context) => {
   const { account } = ctx.params;
-  const rawData = await transactionData.find({ account: account }).exec();
+
+  const rawData = await listAllTransactionsDal(account, getUserID(ctx));
+
   const allTransactions = rawData.map((transaction) => ({
     date: transaction.date,
+    userID: transaction.userID,
     rawDescription: transaction.rawDescription,
     sanitizedDescription: transaction.sanitizedDescription,
     account: transaction.account,

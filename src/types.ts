@@ -10,6 +10,7 @@ export enum Bank {
 }
 
 export type Account = {
+  userID?: string;
   accountName: string;
   accountType?: string;
   balance?: number;
@@ -19,6 +20,7 @@ export type Account = {
 
 export type Transaction = {
   date: Date;
+  userID?: string;
   rawDescription: string;
   sanitizedDescription?: string;
   account: string;
@@ -32,6 +34,7 @@ export type Transaction = {
 
 export type Sanitization = {
   id?: string;
+  userID?: string;
   keywords: string[];
   sanitizedDescription: string;
   type: TransactionType;
