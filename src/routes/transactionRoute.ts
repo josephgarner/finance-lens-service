@@ -50,7 +50,7 @@ transactionRoute.get("/list-all", async (ctx, next) => {
   }, ctx);
 });
 
-transactionRoute.get("/list-all/:account", async (ctx, next) => {
+transactionRoute.get("/list-all/:account/:pageNumber", async (ctx, next) => {
   await handleError(async () => {
     await next();
     await listAllForAccountHandler(ctx);
@@ -64,12 +64,15 @@ transactionRoute.get("/list-unsanitized", async (ctx, next) => {
   }, ctx);
 });
 
-transactionRoute.get("/list-unsanitized/:account", async (ctx, next) => {
-  await handleError(async () => {
-    await next();
-    await listUnsanitizedForAccountHandler(ctx);
-  }, ctx);
-});
+transactionRoute.get(
+  "/list-unsanitized/:account/:pageNumber",
+  async (ctx, next) => {
+    await handleError(async () => {
+      await next();
+      await listUnsanitizedForAccountHandler(ctx);
+    }, ctx);
+  }
+);
 
 transactionRoute.post("/add-sanitizing", async (ctx, next) => {
   await handleError(async () => {

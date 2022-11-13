@@ -3,11 +3,15 @@ import { getUserID } from "../../auth/getUserID";
 import { listAllTransactionsDal } from "../../dal";
 
 export const listAllForAccountHandler = async (ctx: Context) => {
-  const { account } = ctx.params;
+  const { account, pageNumber } = ctx.params;
 
-  const rawData = await listAllTransactionsDal(account, getUserID(ctx));
+  const { totalPages, results } = await listAllTransactionsDal(
+    account,
+    getUserID(ctx),
+    pageNumber
+  );
 
-  const allTransactions = rawData.map((transaction) => ({
+  const allTransactions = results.map((transaction) => ({
     date: transaction.date,
     userID: transaction.userID,
     rawDescription: transaction.rawDescription,
@@ -20,8 +24,11 @@ export const listAllForAccountHandler = async (ctx: Context) => {
     debit: transaction.debit,
     balance: transaction.balance,
   }));
-  allTransactions.sort(
-    (transA, transB) => transA.date.getTime() - transB.date.getTime()
-  );
-  ctx.body = { result: { transactions: allTransactions } };
+  ctx.body = {
+    result: {
+      totalPages: totalPages,
+      pageNumber: pageNumber,
+      transactions: allTransactions,
+    },
+  };
 };

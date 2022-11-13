@@ -1,12 +1,15 @@
 import { Context } from "koa";
 import { getUserID } from "../../auth/getUserID";
 import { listUnsanitizedForAccountDal } from "../../dal";
-import { transactionData } from "../../db";
 
 export const listUnsanitizedForAccountHandler = async (ctx: Context) => {
-  const { account } = ctx.params;
-  const rawData = await listUnsanitizedForAccountDal(account, getUserID(ctx));
-  const allTransactions = rawData.map((transaction) => ({
+  const { account, pageNumber } = ctx.params;
+  const { totalPages, results } = await listUnsanitizedForAccountDal(
+    account,
+    getUserID(ctx),
+    Number(pageNumber)
+  );
+  const allTransactions = results.map((transaction) => ({
     date: transaction.date,
     rawDescription: transaction.rawDescription,
     sanitizedDescription: transaction.sanitizedDescription,
@@ -18,8 +21,11 @@ export const listUnsanitizedForAccountHandler = async (ctx: Context) => {
     debit: transaction.debit,
     balance: transaction.balance,
   }));
-  allTransactions.sort(
-    (transA, transB) => transA.date.getTime() - transB.date.getTime()
-  );
-  ctx.body = { result: { transactions: allTransactions } };
+  ctx.body = {
+    result: {
+      totalPages: totalPages,
+      pageNumber: pageNumber,
+      transactions: allTransactions,
+    },
+  };
 };
