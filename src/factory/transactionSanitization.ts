@@ -21,12 +21,21 @@ export const transactionSanitization = async (
           transactionData.forEach(async (transaction) => {
             const sanitsingTransaction = sanitsingData.filter(
               (sanitsiedTransaction) => {
-                const results = sanitsiedTransaction.keywords.map((word) => {
-                  return transaction.description
-                    .toLocaleLowerCase()
-                    .includes(word.toLocaleLowerCase());
-                });
-                return results.every((e) => e === true);
+                const keywordResult = sanitsiedTransaction.keywords.map(
+                  (word) => {
+                    return transaction.description
+                      .toLocaleLowerCase()
+                      .includes(word.toLocaleLowerCase());
+                  }
+                );
+                const typeMatch =
+                  (transaction.debit &&
+                    (sanitsiedTransaction.type === TransactionType.EXPENSE ||
+                      sanitsiedTransaction.type ===
+                        TransactionType.TRANSFER)) ||
+                  (transaction.credit &&
+                    sanitsiedTransaction.type === TransactionType.INCOME);
+                return keywordResult.every((e) => e === true) && typeMatch;
               }
             );
             const dateSplit = transaction.date.split("/");
@@ -78,12 +87,21 @@ export const transactionSanitization = async (
           processedTransactions.forEach((transaction) => {
             const sanitsingTransaction = sanitsingData.filter(
               (sanitsiedTransaction) => {
-                const results = sanitsiedTransaction.keywords.map((word) => {
-                  return transaction.rawDescription
-                    .toLocaleLowerCase()
-                    .includes(word.toLocaleLowerCase());
-                });
-                return results.every((e) => e === true);
+                const keywordResult = sanitsiedTransaction.keywords.map(
+                  (word) => {
+                    return transaction.rawDescription
+                      .toLocaleLowerCase()
+                      .includes(word.toLocaleLowerCase());
+                  }
+                );
+                const typeMatch =
+                  (transaction.debit &&
+                    (sanitsiedTransaction.type === TransactionType.EXPENSE ||
+                      sanitsiedTransaction.type ===
+                        TransactionType.TRANSFER)) ||
+                  (transaction.credit &&
+                    sanitsiedTransaction.type === TransactionType.INCOME);
+                return keywordResult.every((e) => e === true) && typeMatch;
               }
             );
             if (sanitsingTransaction.length > 0) {
