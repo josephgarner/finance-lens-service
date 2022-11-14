@@ -10,6 +10,7 @@ export const listSanitizingHandler = async (ctx: Context) => {
     sanitizedDescription: sanitization.sanitizedDescription,
     type: sanitization.type,
     category: sanitization.category,
+    subcategory: sanitization.subcategory,
     vendor: sanitization.vendor,
   }));
   ctx.body = { result: { sanitization: allSanitization } };

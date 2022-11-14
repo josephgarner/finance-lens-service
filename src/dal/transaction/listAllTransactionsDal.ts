@@ -1,7 +1,7 @@
 import { transactionData } from "../../db";
 
 export const listAllTransactionsDal = async (
-  account: String,
+  account: string,
   userID: string,
   pageNumber: number
 ) => {

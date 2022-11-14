@@ -14,6 +14,7 @@ export const createTransactionDal = async (
       sanitizedDescription: transaction.sanitizedDescription,
       account: transaction.account,
       category: transaction.category,
+      subcategory: transaction.subcategory,
       vendor: transaction.vendor,
       credit: transaction.credit,
       debit: transaction.debit,

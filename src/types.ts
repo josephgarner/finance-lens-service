@@ -26,6 +26,7 @@ export type Transaction = {
   account: string;
   type: TransactionType;
   category?: string;
+  subcategory?: string;
   vendor?: string;
   credit: number;
   debit: number;
@@ -39,6 +40,7 @@ export type Sanitization = {
   sanitizedDescription: string;
   type: TransactionType;
   category: string;
+  subcategory?: string;
   vendor: string;
 };
 

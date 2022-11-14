@@ -15,6 +15,7 @@ export const updateTransactionDal = async (
       sanitizedDescription: transaction.sanitizedDescription,
       type: transaction.type,
       category: transaction.category,
+      subcategory: transaction.subcategory,
       vendor: transaction.vendor,
     }
   );

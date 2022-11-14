@@ -12,6 +12,7 @@ export const createSanitizingDal = async (
       sanitizedDescription: sanitization.sanitizedDescription,
       type: sanitization.type,
       category: sanitization.category,
+      subcategory: sanitization.subcategory,
       vendor: sanitization.vendor,
     })
     .save();

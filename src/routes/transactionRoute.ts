@@ -4,9 +4,8 @@ import { handleError } from "../utils";
 import {
   addSanitizingHandler,
   deleteSanitizingHandler,
-  listAllHandler,
+  listAllCategoriesHandler,
   listSanitizingHandler,
-  listUnsanitizedHandler,
   runSanitizationHandler,
   updateSanitizingHandler,
   updateTransactionHandler,
@@ -46,13 +45,6 @@ transactionRoute.post(
 transactionRoute.get("/list-all", async (ctx, next) => {
   await handleError(async () => {
     await next();
-    await listAllHandler(ctx);
-  }, ctx);
-});
-
-transactionRoute.get("/list-all/:account/:pageNumber", async (ctx, next) => {
-  await handleError(async () => {
-    await next();
     await listAllForAccountHandler(ctx);
   }, ctx);
 });
@@ -60,19 +52,9 @@ transactionRoute.get("/list-all/:account/:pageNumber", async (ctx, next) => {
 transactionRoute.get("/list-unsanitized", async (ctx, next) => {
   await handleError(async () => {
     await next();
-    await listUnsanitizedHandler(ctx);
+    await listUnsanitizedForAccountHandler(ctx);
   }, ctx);
 });
-
-transactionRoute.get(
-  "/list-unsanitized/:account/:pageNumber",
-  async (ctx, next) => {
-    await handleError(async () => {
-      await next();
-      await listUnsanitizedForAccountHandler(ctx);
-    }, ctx);
-  }
-);
 
 transactionRoute.post("/add-sanitizing", async (ctx, next) => {
   await handleError(async () => {
@@ -109,9 +91,16 @@ transactionRoute.post("/update", async (ctx, next) => {
   }, ctx);
 });
 
-transactionRoute.post("/run-sanitization/:account", async (ctx, next) => {
+transactionRoute.post("/run-sanitization", async (ctx, next) => {
   await handleError(async () => {
     await next();
     await runSanitizationHandler(ctx);
+  }, ctx);
+});
+
+transactionRoute.get("/list-categories", async (ctx, next) => {
+  await handleError(async () => {
+    await next();
+    await listAllCategoriesHandler(ctx);
   }, ctx);
 });

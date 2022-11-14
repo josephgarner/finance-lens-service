@@ -30,6 +30,10 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  subcategory: {
+    type: String,
+    required: false,
+  },
   vendor: {
     type: String,
     required: false,

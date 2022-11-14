@@ -6,3 +6,4 @@ export * from "./createSanitizingDal";
 export * from "./listSanitizingDal";
 export * from "./listUnsanitizedForAccountDal";
 export * from "./createTransactionDal";
+export * from "./listAllCategories";

@@ -13,6 +13,7 @@ const updateSanitizingSchema = z.object({
     sanitizedDescription: z.string(),
     type: z.string(),
     category: z.string().optional(),
+    subcategory: z.string().optional(),
     vendor: z.string(),
   }),
 });

@@ -14,6 +14,7 @@ const updateTransactionSchema = z.object({
     account: z.string(),
     type: z.string(),
     category: z.string().optional(),
+    subcategory: z.string().optional(),
     vendor: z.string().optional(),
     credit: z.number(),
     debit: z.number(),
