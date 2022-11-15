@@ -34,7 +34,8 @@ export const transactionSanitization = async (
                       sanitsiedTransaction.type ===
                         TransactionType.TRANSFER)) ||
                   (transaction.credit &&
-                    sanitsiedTransaction.type === TransactionType.INCOME);
+                    sanitsiedTransaction.type === TransactionType.INCOME) ||
+                  sanitsiedTransaction.type === TransactionType.TRANSFER;
                 return keywordResult.every((e) => e === true) && typeMatch;
               }
             );
@@ -100,7 +101,8 @@ export const transactionSanitization = async (
                       sanitsiedTransaction.type ===
                         TransactionType.TRANSFER)) ||
                   (transaction.credit &&
-                    sanitsiedTransaction.type === TransactionType.INCOME);
+                    sanitsiedTransaction.type === TransactionType.INCOME) ||
+                  sanitsiedTransaction.type === TransactionType.TRANSFER;
                 return keywordResult.every((e) => e === true) && typeMatch;
               }
             );

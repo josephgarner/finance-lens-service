@@ -6,7 +6,7 @@ export const updateSanitizingDal = async (
   userID: string
 ) => {
   await sanitizationModel.updateOne(
-    { id: sanitization.id, userID: userID },
+    { _id: sanitization.id, userID: userID },
     {
       keywords: sanitization.keywords,
       sanitizedDescription: sanitization.sanitizedDescription,
