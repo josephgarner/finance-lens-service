@@ -30,7 +30,7 @@ app.use(
   })
 );
 
-app.use((ctx, next) => {
+app.use(async (ctx, next) => {
   return next().catch((err) => {
     if (401 == err.status) {
       ctx.status = 401;

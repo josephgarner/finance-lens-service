@@ -12,3 +12,6 @@ export * from "./transactions/listAllCategoriesHandler";
 export * from "./account/createHandler";
 export * from "./account/listAccountsHandler";
 export * from "./account/updateBalanceHandler";
+
+// Core
+export * from "./core/deleteAllHandler";

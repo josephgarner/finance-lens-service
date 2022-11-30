@@ -1,8 +1,8 @@
 import { Context } from "koa";
 import { z } from "zod";
 import { getUserID } from "../../auth/getUserID";
-import { updateSanitizingDal } from "../../dal/transaction/updateSanitizingDal";
-import { sanitizationModel } from "../../db";
+import { updateSanitizingDal } from "../../dal";
+
 import { Sanitization } from "../../types";
 import { validate } from "../../utils";
 
