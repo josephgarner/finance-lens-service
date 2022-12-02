@@ -13,8 +13,8 @@ export const listAllCategories = async (userID: string) => {
     .select("subcategory")
     .distinct("subcategory")
     .exec();
-  subcategories = subcategories.filter((e) => e !== null || e !== "");
-  categories = categories.filter((e) => e !== null || e !== "");
+  subcategories = subcategories.filter((e) => e !== null && e !== "");
+  categories = categories.filter((e) => e !== null && e !== "");
   console.log(categories, subcategories);
   return { categories, subcategories };
 };
